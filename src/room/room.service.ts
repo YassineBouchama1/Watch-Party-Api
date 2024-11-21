@@ -14,7 +14,7 @@ export class RoomService {
       // Create the room with the authenticated user's ID
       const newRoom = await this.roomModel.create({
         ...createRoomDto,
-        userId, // Add the authenticated user's ID
+        userId,
       });
 
       return newRoom;
@@ -22,11 +22,11 @@ export class RoomService {
       console.error('Error creating room:', error.message);
       throw new Error('Database error while creating room');
     }
-  }
+  } 
 
-  async findAll() {
+  async findAll(userId:string) {
     try {
-      return await this.roomModel.find().exec();
+      return await this.roomModel.find({userId}).exec();
     } catch (error) {
       console.error('Error fetching rooms:', error);
       throw new Error('Database error');
@@ -43,15 +43,22 @@ export class RoomService {
 
   async update(id: string, updateRoomDto: UpdateRoomDto, userId: string) {
     const room = await this.roomModel.findById(id);
-    if (!room || room.userId.toString() !== userId) {
-      throw new Error('Unauthorized');
+    if (!room || room.userId.toString() !== userId.toString()) {
+      throw new Error('Unauthorized it is not yours');
     }
     return await this.roomModel.findByIdAndUpdate(id, updateRoomDto, {
       new: true,
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} room`;
+  async remove(id: string, userId: string) {
+   
+
+  
+    const room = await this.roomModel.findById(id);
+    if (!room || room.userId.toString() !== userId.toString()) {
+      throw new Error('Unauthorized it is not yours');
+    }
+    return await this.roomModel.findByIdAndDelete(id);
   }
 }

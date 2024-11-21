@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
-import { RoomGateway } from './room.gateway';
+import { PartyGateway } from './room.gateway';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Room, RoomSchema } from './schemas/room.schema';
 import { User, UserSchema } from 'src/user/schemas/user.schema';
@@ -14,7 +14,7 @@ import { User, UserSchema } from 'src/user/schemas/user.schema';
     ]),
   ],
   controllers: [RoomController],
-  providers: [RoomService, RoomGateway],
+  providers: [RoomService, PartyGateway],
 })
 export class RoomModule {}
  

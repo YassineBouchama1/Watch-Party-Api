@@ -12,6 +12,7 @@ export class RoomController {
 
   @Post()
   create(@Body() createRoomDto: CreateRoomDto, @Req() req: RequestWithUser) {
+    console.log('create');
     try {
       return this.roomService.create(createRoomDto, req.userId);
     } catch (error) {
@@ -20,9 +21,9 @@ export class RoomController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Req() req: RequestWithUser) {
     try {
-      return this.roomService.findAll();
+      return this.roomService.findAll(req.userId);
     } catch (error) {
       throw new BadRequestException('Failed to fetch rooms');
     }
@@ -53,7 +54,7 @@ export class RoomController {
   @Delete(':id')
   remove(@Param('id') id: string, @Req() req: RequestWithUser) {
     try {
-      return this.roomService.remove(+id);
+      return this.roomService.remove(id, req.userId);
     } catch (error) {
       throw new BadRequestException('Failed to create room');
     }
