@@ -18,6 +18,7 @@ export const createSocketMiddleware = (
         socket.handshake.auth.token?.replace('Bearer ', '') ||
         socket.handshake.headers.authorization?.replace('Bearer ', '');
       const username = socket.handshake.auth.username;
+      const id = socket.handshake.auth.id;
 
       if (token) {
         const payload = await jwtService.verifyAsync(token);
@@ -33,7 +34,7 @@ export const createSocketMiddleware = (
         socket.user = user;
       } else if (username) {
         // Handle guest user
-        socket.user = { username, role: RoleTypes.Guest } as any; // Cast to any to bypass type checking
+        socket.user = { username, role: RoleTypes.Guest,_id:id } as any; // Cast to any to bypass type checking
       } else {
         return next(new Error('Authentication error'));
       }
