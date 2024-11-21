@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Socket } from 'socket.io';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../user/schemas/user.schema';
-import { StatusUser } from './types/user.enum';
+import { RoleTypes, StatusUser } from './types/user.enum';
 
 export interface AuthenticatedSocket extends Socket {
   user?: UserDocument;
@@ -33,7 +33,7 @@ export const createSocketMiddleware = (
         socket.user = user;
       } else if (username) {
         // Handle guest user
-        socket.user = { username } as any; // Cast to any to bypass type checking
+        socket.user = { username, role: RoleTypes.Guest } as any; // Cast to any to bypass type checking
       } else {
         return next(new Error('Authentication error'));
       }

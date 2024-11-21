@@ -1,6 +1,7 @@
 export enum RoleTypes {
   User = 'user',
   Admin = 'admin',
+  Guest = 'guest',
 }
 
 export enum StatusUser {
